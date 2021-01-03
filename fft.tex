@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[utf8x]{inputenc} 
+\usepackage[croatian]{babel}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage{listings}
+\usepackage{mathtools}
+
+\title{Fast Fourier transform}
+\begin{document}
+
+\section{Fourierov red}
+Niz funkcija: 
+\begin{align*}
+1,\quad cos \left( \frac{2 k \pi x}{l} \right),\quad sin \left(\frac{2 k \pi x}{l}\right)\quad  \text{$k \in \mathbb{N}$}
+\end{align*}
+čini bazu prostora $H\left[ \frac{−l}{2}, \frac{l}{2}\right]$ sa standardnim skalarnim produktom. \\
+Njoj pridužen rastav funkcije $f \in H\left[ \frac{−l}{2}, \frac{l}{2}\right]$ nazivamo
+trigonometrijskim Fourierovim redom:
+\begin{align} \label{red}
+ f(x) = \frac{a_0}{2} + \sum_{k=1}^{\infty} \left( a_k cos \frac{2 k \pi x}{l} + b_k sin \frac{2k \pi x}{l} \right) 
+\end{align}
+uz koeficijente:
+\[\begin{aligned}
+a_{k} &=\frac{1}{l} \int_{\frac{-l}{2}}^{\frac{l}{2}} f(x) \cos \frac{2 k \pi x}{l}, \quad k=0,1,2 \ldots \\
+b_{k} &=\frac{1}{l} \int_{\frac{-l}{2}}^{\frac{l}{2}} f(x) \sin \frac{2 k \pi x}{l}, \quad k=1,2 \ldots
+\end{aligned}\]
+
+\section{Fourierova transformacija}
+Cilj je proširiti rezultat prvog dijela na funkcije definirane na cijelom $\mathbb{R}$.\\ 
+Koristeći Eulerov identitet:
+
+\[ r e^{i\phi}=r(\cos{\phi}+i\sin{\phi}).\]
+dobivamo izraz ekivalentan (\ref{red}):
+\begin{align} \label{transformacija}
+ f(x)=\sum_{k=-\infty}^{\infty}{c_{k} e^{ \frac{2k\pi i}{l}x} }, 
+\end{align}
+\[c_{k}=\frac{1}{l}\int_{\frac{-l}{2}}^{\frac{l}{2}}{f(x)e^{-\frac{2k\pi i}{l}x}dx}\] \\
+Puštanjem $l \rightarrow \infty$ koeficijenti $c_k$ teže u $0$.\\
+Međutim, promotrimo li $c_k$ kao funkcije ovisne o $\frac{k}{l}$ dobivamo:
+\[
+F\left(\frac{k}{l}\right)=\int_{\frac{-l}{2}}^{\frac{l}{2}}{f(x)e^{-\frac{2k\pi i}{l}x}dx}
+\]
+Tada nova formula za Fourierov red glasi:
+\[
+f(x)=\sum_{k=-\infty}^{\infty}{\frac{1}{l}F\left(\frac{k}{l}\right) e^{\frac{k}{l} 2\pi i x }}.
+\]
+Puštanjem $l \rightarrow \infty$ dobivamo izraz za Fourierovu transformaciju:
+\[
+f(x)= \lim_{l \to \infty} \sum_{k=-\infty}^{\infty}{\frac{1}{l}F\left(\frac{k}{l}\right) e^{\frac{k}{l} 2\pi ix}} = \int_{- \infty}^{ \infty}{F(s)e^{s 2\pi ix}ds}
+\]
+
+\[
+F(s)=\int_{-\infty}^{\infty}{f(x)e^{-s 2\pi ix}dx}
+\]
+
+
+\section{Diskretna Fourierova transformacija (DFT)}
+U stvarnim primjenama često nemamo zatvorenu formulu za funkciju $f$, nego ju aproksimiramo uzorkovanjem na diskretnom skupu $x_{0},\ldots,x_{n-1}$.\\
+U tom nam slučaju Fourierova transformacija (koja je definirana za kontinuiran skup) ne odgovara pa za $f(x_{k})=f_{k}$ definiramo DFT na sljedeći način:
+\begin{align} \label{dft}
+F_{j} = \sum_{k=0}^{n-1} f_{k} e^{\frac{2\pi ikj}{n}}, \quad j=0,1,2 \ldots n-1    
+\end{align}
+Analogno za inverznu transformaciju i funkciju $F$ uzorkovanu na skupu $s_{0},\ldots,s_{n-1}$ imamo:
+\begin{align}
+f_{k} =\frac{1}{n}\sum_{j=0}^{n-1}F_{j} e^{\frac{-2\pi ikj}{n}}, \quad k=0,1,2 \ldots n-1    
+\end{align}
+\end{document}
+
+
